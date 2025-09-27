@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+</head>
+
+<body>
+    <header>
+        <!-- place navbar here -->
+    </header>
+    <main>
+        a,
+
+        <div class="container">
+            <!-- Nút mở modal -->
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#modalSm">Modal
+                SM</button>
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#modalLg">Modal
+                LG</button>
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#modalXl">Modal
+                XL</button>
+
+            <!-- Modal SM -->
+            <div class="modal fade" id="modalSm" tabindex="-1">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal Small</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">Nội dung modal nhỏ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal LG -->
+            <div class="modal fade" id="modalLg" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal Large</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">Nội dung modal lớn</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal XL -->
+            <div class="modal fade" id="modalXl" tabindex="-1">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal Extra Large</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">Nội dung modal rất lớn</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        b,
+        <!-- Tạo modal và sử dụng lớp .modal-dialog-scrollable -->
+        <!-- Nút mở modal -->
+        <div class="container mt-5">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalScrollable">
+                Mở Modal
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalScrollable" tabindex="-1" aria-labelledby="modalScrollableLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalScrollableLabel">Modal Scrollable</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Nội dung modal có thể cuộn.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.</p>
+                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat.</p>
+                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                            pariatur.</p>
+                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                            anim id est laborum.</p>
+                        <p>Thêm nội dung để kiểm tra cuộn...</p>
+                        <p>Thêm nội dung để kiểm tra cuộn...</p>
+                        <p>Thêm nội dung để kiểm tra cuộn...</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        c,
+        <!-- Sử dụng card tạo danh sách sản phẩm, khi ấn nút xem chi tiết sẽ hiển thị modal chứa thông tin và hình ảnh sản phẩm -->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 1</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm 1.</p>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#modalProduct1">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 2</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm 2.</p>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#modalProduct2">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 3</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm 3.</p>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#modalProduct3">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal sản phẩm 1 -->
+        <div class="modal fade" id="modalProduct1" tabindex="-1" aria-labelledby="modalProduct1Label"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalProduct1Label">Chi tiết sản phẩm 1</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="https://via.placeholder.com/300" class="img-fluid" alt="Product 1">
+                        <p>Mô tả chi tiết về sản phẩm 1.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal sản phẩm 2 -->
+        <div class="modal fade" id="modalProduct2" tabindex="-1" aria-labelledby="modalProduct2Label"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalProduct2Label">Chi tiết sản phẩm 2</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="https://via.placeholder.com/300" class="img-fluid" alt="Product 2">
+                        <p>Mô tả chi tiết về sản phẩm 2.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal sản phẩm 3 -->
+        <div class="modal fade" id="modalProduct3" tabindex="-1" aria-labelledby="modalProduct3Label"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalProduct3Label">Chi tiết sản phẩm 3</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="https://via.placeholder.com/300" class="img-fluid" alt="Product 3">
+                        <p>Mô tả chi tiết về sản phẩm 3.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <!-- place footer here -->
+    </footer>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

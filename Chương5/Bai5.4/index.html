@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bài 5.4 - Tooltip Vị trí</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="p-5">
+
+    <h3>Tooltip theo vị trí</h3>
+    <a href="#" class="btn btn-secondary m-2" data-bs-toggle="tooltip" data-bs-placement="top"
+        title="Tooltip on top">Tooltip on top</a>
+    <a href="#" class="btn btn-secondary m-2" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="Tooltip on right">Tooltip on right</a>
+    <a href="#" class="btn btn-secondary m-2" data-bs-toggle="tooltip" data-bs-placement="bottom"
+        title="Tooltip on bottom">Tooltip on bottom</a>
+    <a href="#" class="btn btn-secondary m-2" data-bs-toggle="tooltip" data-bs-placement="left"
+        title="Tooltip on left">Tooltip on left</a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Kích hoạt tooltip
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
+    </script>
+</body>
+
+</html>
