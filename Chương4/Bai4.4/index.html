@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nav Tabs Bootstrap</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="p-5">
+
+    <h2 class="mb-4 text-center">Ví dụ Nav Tabs Bootstrap</h2>
+
+    <!-- Nav Tabs -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                role="tab">
+                Trang chủ
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="business-tab" data-bs-toggle="tab" data-bs-target="#business" type="button"
+                role="tab">
+                Kinh doanh
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tech-tab" data-bs-toggle="tab" data-bs-target="#tech" type="button" role="tab">
+                Công nghệ
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content p-3 border border-top-0" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <h4>Trang chủ</h4>
+            <p>Chào mừng bạn đến với trang chủ. Đây là phần giới thiệu tổng quan.</p>
+        </div>
+        <div class="tab-pane fade" id="business" role="tabpanel" aria-labelledby="business-tab">
+            <h4>Kinh doanh</h4>
+            <p>Cập nhật tin tức kinh doanh mới nhất: thị trường, tài chính, đầu tư.</p>
+        </div>
+        <div class="tab-pane fade" id="tech" role="tabpanel" aria-labelledby="tech-tab">
+            <h4>Công nghệ</h4>
+            <p>Các xu hướng công nghệ mới nhất: AI, Blockchain, IoT và nhiều hơn nữa.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
