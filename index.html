@@ -15,3 +15,38 @@
 </body>
 
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+
+<script>
+async function runMohninhAI() {
+    try {
+        // 2. Tải file mô hình .onnx (để cùng thư mục với file html)
+        const session = await ort.InferenceSession.create('./model.onnx');
+        console.log("Đã tải mô hình AI thành công!");
+
+        // 3. Chuẩn bị dữ liệu đầu vào (Ví dụ mô hình cần 4 số đầu vào)
+        // Bạn cần thay đổi Float32Array và hình dạng [1, 4] cho đúng với mô hình của bạn
+        const inputData = Float32Array.from([1.5, 2.3, 0.9, 4.1]); 
+        const inputTensor = new ort.Tensor('float32', inputData, [1, 4]);
+
+        // 4. Gắn dữ liệu vào đúng tên cổng Input đã xem ở Bước 1
+        const feeds = { 'args_0:0': inputTensor };
+
+        // 5. Chạy mô hình (Inference)
+        const results = await session.run(feeds);
+
+        // 6. Lấy kết quả đầu ra từ cổng Output
+        const outputTensor = results['Identity:0'];
+        console.log("Kết quả dự đoán của AI:", outputTensor.data);
+        
+        alert("AI dự đoán: " + outputTensor.data);
+
+    } catch (e) {
+        console.error("Lỗi khi chạy AI:", e);
+    }
+}
+
+// Gọi hàm chạy thử
+runMohninhAI();
+</script>
