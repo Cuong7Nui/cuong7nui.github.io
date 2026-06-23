@@ -22,7 +22,7 @@
 async function runMohninhAI() {
     try {
         // 2. Tải file mô hình .onnx (để cùng thư mục với file html)
-        const session = await ort.InferenceSession.create('./model.onnx');
+        const session = await ort.InferenceSession.create('./nfsw.onnx');
         console.log("Đã tải mô hình AI thành công!");
 
         // 3. Chuẩn bị dữ liệu đầu vào (Ví dụ mô hình cần 4 số đầu vào)
