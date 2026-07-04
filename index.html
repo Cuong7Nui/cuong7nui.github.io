@@ -1,52 +1,309 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="vi">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Drill</title>
-	
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Trận Hỗn Loạn</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            user-select: none;
+        }
 
-<body>
-	<h1>My github</h1>
-	<a href="https://github.com/Cuong7Nui">github.com/Cuong7Nui</a>
+        #header {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
 
-</body>
-
-</html>
-
-<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
-
-<script>
-async function runMohninhAI() {
-    try {
-        // 2. Tải file mô hình .onnx (để cùng thư mục với file html)
-        const session = await ort.InferenceSession.create('./nfsw.onnx');
-        console.log("Đã tải mô hình AI thành công!");
-
-        // 3. Chuẩn bị dữ liệu đầu vào (Ví dụ mô hình cần 4 số đầu vào)
-        // Bạn cần thay đổi Float32Array và hình dạng [1, 4] cho đúng với mô hình của bạn
-        const inputData = Float32Array.from([1.5, 2.3, 0.9, 4.1]); 
-        const inputTensor = new ort.Tensor('float32', inputData, [1, 4]);
-
-        // 4. Gắn dữ liệu vào đúng tên cổng Input đã xem ở Bước 1
-        const feeds = { 'args_0:0': inputTensor };
-
-        // 5. Chạy mô hình (Inference)
-        const results = await session.run(feeds);
-
-        // 6. Lấy kết quả đầu ra từ cổng Output
-        const outputTensor = results['Identity:0'];
-        console.log("Kết quả dự đoán của AI:", outputTensor.data);
+        h1 { margin: 0 0 10px 0; color: #ff5252; text-transform: uppercase; letter-spacing: 2px;}
         
-        alert("AI dự đoán: " + outputTensor.data);
+        #target-display {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
 
-    } catch (e) {
-        console.error("Lỗi khi chạy AI:", e);
-    }
-}
+        #target-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #4caf50;
+            background: #2a2a40;
+            padding: 5px 20px;
+            border-radius: 8px;
+            display: inline-block;
+        }
 
-// Gọi hàm chạy thử
-runMohninhAI();
-</script>
+        #taunt {
+            color: #ff5252;
+            height: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #game-container {
+            position: relative;
+            background: #2a2a40;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Thanh thời gian */
+        #timer-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #444;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        #timer-bar {
+            height: 100%;
+            width: 100%;
+            background: #ff5252;
+            transform-origin: left;
+        }
+
+        /* Lưới 5x5 */
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .tile {
+            width: 65px;
+            height: 65px;
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+        }
+
+        .tile:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 rgba(0,0,0,0.3);
+        }
+
+        .tile.found {
+            background-color: #1e1e2f !important;
+            color: #4caf50;
+            cursor: default;
+            pointer-events: none;
+            box-shadow: none;
+            transform: none;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(30, 30, 47, 0.9);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .btn-action {
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-action:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+
+    <div id="header">
+        <h1>Ma Trận Hỗn Loạn</h1>
+        <div id="target-display">Hãy tìm số: <br><span id="target-number">1</span></div>
+        <div id="taunt"></div>
+    </div>
+
+    <div id="game-container">
+        <div id="timer-bar-container">
+            <div id="timer-bar"></div>
+        </div>
+        <div id="grid"></div>
+        
+        <div id="overlay">
+            <h2 id="overlay-title">Sẵn sàng trầm cảm?</h2>
+            <p style="text-align: center; padding: 0 20px;">
+                Tìm số từ 1 đến 25.<br>Bảng sẽ tự đảo lộn mỗi 3.5 giây.<br>Bấm sai = Chơi lại từ đầu!
+            </p>
+            <button class="btn-action" id="btn-start">Bắt đầu hành xác</button>
+        </div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const targetNumberDisplay = document.getElementById('target-number');
+        const tauntDisplay = document.getElementById('taunt');
+        const timerBar = document.getElementById('timer-bar');
+        const overlay = document.getElementById('overlay');
+        const btnStart = document.getElementById('btn-start');
+        const overlayTitle = document.getElementById('overlay-title');
+
+        const totalNumbers = 25;
+        let numbers = Array.from({length: totalNumbers}, (_, i) => i + 1);
+        let currentTarget = 1;
+        let isPlaying = false;
+        
+        // Thời gian xáo trộn (3.5 giây)
+        const SHUFFLE_TIME = 3500; 
+        let timeLeft = SHUFFLE_TIME;
+        let lastTimestamp = 0;
+        let animationFrameId;
+
+        const colors = ['#e91e63', '#9c27b0', '#3f51b5', '#00bcd4', '#009688', '#ff9800', '#795548', '#607d8b'];
+        const taunts = [
+            "Oops! Mắt để đi đâu thế?",
+            "Làm lại từ đầu cho nhớ nhé!",
+            "Tay nhanh hơn não à?",
+            "Vừa thấy nó ở đây mà? Cay không?",
+            "Chơi bình tĩnh thôi bạn êi!"
+        ];
+
+        // Thuật toán đảo mảng ngẫu nhiên (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Vẽ lưới lên màn hình
+        function renderBoard() {
+            grid.innerHTML = '';
+            numbers.forEach(num => {
+                const btn = document.createElement('button');
+                btn.className = 'tile';
+                
+                if (num < currentTarget) {
+                    // Đã tìm thấy
+                    btn.innerText = "✔️";
+                    btn.classList.add('found');
+                } else {
+                    btn.innerText = num;
+                    // Đổi màu ngẫu nhiên mỗi lần render để phá vỡ trí nhớ màu sắc của người chơi
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    btn.style.backgroundColor = randomColor;
+                    
+                    // Xử lý khi click
+                    btn.onmousedown = () => handleTileClick(num);
+                }
+                
+                grid.appendChild(btn);
+            });
+        }
+
+        function handleTileClick(num) {
+            if (!isPlaying) return;
+
+            if (num === currentTarget) {
+                currentTarget++;
+                tauntDisplay.innerText = ""; // Xóa lời cà khịa
+                
+                if (currentTarget > totalNumbers) {
+                    winGame();
+                } else {
+                    targetNumberDisplay.innerText = currentTarget;
+                    renderBoard(); // Render lại để cập nhật dấu ✔️
+                }
+            } else {
+                // BẤM SAI => TRỪNG PHẠT
+                currentTarget = 1;
+                targetNumberDisplay.innerText = currentTarget;
+                tauntDisplay.innerText = taunts[Math.floor(Math.random() * taunts.length)];
+                
+                // Ép xáo trộn bảng ngay lập tức
+                timeLeft = SHUFFLE_TIME; 
+                shuffleArray(numbers);
+                renderBoard();
+            }
+        }
+
+        // Vòng lặp đếm ngược thời gian
+        function gameLoop(timestamp) {
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const deltaTime = timestamp - lastTimestamp;
+            lastTimestamp = timestamp;
+
+            if (isPlaying) {
+                timeLeft -= deltaTime;
+                
+                // Cập nhật thanh UI
+                const percentage = (timeLeft / SHUFFLE_TIME) * 100;
+                timerBar.style.width = percentage + '%';
+
+                // Hết giờ -> Xáo trộn
+                if (timeLeft <= 0) {
+                    shuffleArray(numbers);
+                    renderBoard();
+                    timeLeft = SHUFFLE_TIME; // Reset thời gian
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            currentTarget = 1;
+            targetNumberDisplay.innerText = currentTarget;
+            tauntDisplay.innerText = "";
+            isPlaying = true;
+            timeLeft = SHUFFLE_TIME;
+            lastTimestamp = performance.now();
+            
+            overlay.style.display = 'none';
+            shuffleArray(numbers);
+            renderBoard();
+            
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function winGame() {
+            isPlaying = false;
+            overlay.style.display = 'flex';
+            overlayTitle.innerText = "🎉 PHÁ ĐẢO! 🎉";
+            overlayTitle.style.color = "#4caf50";
+            document.querySelector('#overlay p').innerText = "Trí nhớ và sự kiên nhẫn của bạn quá khủng khiếp!";
+            btnStart.innerText = "Chơi lại";
+        }
+
+        // Gắn sự kiện nút bắt đầu
+        btnStart.addEventListener('click', startGame);
+
+        // Render bảng khởi tạo (làm nền mờ)
+        renderBoard();
+
+    </script>
+</body>
+</html>
