@@ -28,26 +28,34 @@
       linear-gradient(135deg, #fff4f6, #fff9ef 55%, #ffe9ef);
     background-size: 90px 90px, 130px 130px, auto;
   }
-  .scene { width: min(100%, 760px); text-align: center; }
+  .scene { width: min(100%, 600px); text-align: center; position: relative; }
   .eyebrow { letter-spacing: .18em; text-transform: uppercase; font-size: .75rem; color: #b87990; }
-  h1 { font-family: Georgia, serif; font-weight: 500; font-size: clamp(1.8rem, 5vw, 2.8rem); margin: 10px 0 8px; color: #d94e82; }
+  h1 { font-family: Georgia, serif; font-weight: 500; font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 8px 0; color: #d94e82; }
   
-  /* Khu vực phong thư */
-  .envelope-area { height: 220px; display: grid; place-items: center; position: relative; margin-top: 10px; }
+  /* Khu vực chứa phong thư và lá thư */
+  .envelope-container { 
+    position: relative; 
+    width: 280px; 
+    height: 190px; 
+    margin: 40px auto 20px;
+    perspective: 1000px;
+  }
   
   .envelope-wrapper {
-    position: relative;
-    width: 200px;
-    height: 140px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: var(--envelope-dark);
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(182, 108, 132, 0.25);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 12px 28px rgba(182, 108, 132, 0.25);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.5s ease;
   }
   .envelope-wrapper:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 14px 30px rgba(182, 108, 132, 0.35);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 32px rgba(182, 108, 132, 0.35);
   }
 
   /* Nắp phong thư */
@@ -57,40 +65,59 @@
     left: 0;
     width: 0;
     height: 0;
-    border-left: 100px solid transparent;
-    border-right: 100px solid transparent;
-    border-top: 80px solid #f9cad7;
+    border-left: 140px solid transparent;
+    border-right: 140px solid transparent;
+    border-top: 105px solid #f9cad7;
     transform-origin: top;
-    transition: transform 0.6s ease-in-out;
-    z-index: 3;
+    transition: transform 0.5s ease-in-out, z-index 0.5s;
+    z-index: 4;
   }
 
-  /* Thân phong thư (2 bên và bên dưới) */
+  /* Mặt trước phong thư */
   .pocket {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0;
     height: 0;
-    border-left: 100px solid #f2bac9;
-    border-right: 100px solid #f2bac9;
-    border-bottom: 70px solid #eab0bf;
-    border-radius: 0 0 8px 8px;
-    z-index: 2;
+    border-left: 140px solid #f2bac9;
+    border-right: 140px solid #f2bac9;
+    border-bottom: 95px solid #eab0bf;
+    border-radius: 0 0 10px 10px;
+    z-index: 3;
   }
 
-  /* Chiếc tem trái tim đính nắp thư */
+  /* Tem thư */
   .heart-seal {
     position: absolute;
-    top: 55px;
+    top: 75px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 22px;
-    z-index: 4;
-    transition: opacity 0.4s ease;
+    font-size: 26px;
+    z-index: 5;
+    transition: opacity 0.3s ease;
   }
 
-  /* Khi mở thư */
+  /* LÁ THƯ (Nằm trong phong bao ban đầu) */
+  .letter-card {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.85);
+    width: 90%;
+    max-width: 520px;
+    background: #fff;
+    padding: 28px 24px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(217, 78, 130, 0.15);
+    border: 1px solid #ffe3ec;
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease, z-index 0.1s 0.3s;
+  }
+
+  /* KHI MỞ THƯ: Phong thư mở nắp -> Thư chui ra & phóng to */
   .opened .flap {
     transform: rotateX(180deg);
     z-index: 1;
@@ -99,89 +126,60 @@
     opacity: 0;
   }
   .opened .envelope-wrapper {
-    transform: translateY(20px) scale(0.9);
-    opacity: 0.8;
+    transform: translateY(60px) scale(0.9);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .opened .letter-card {
+    opacity: 1;
+    z-index: 10;
+    pointer-events: auto;
+    /* Hiệu ứng chui ra từ phong bao và scale lớn ra giữa màn hình */
+    transform: translateX(-50%) translateY(-110px) scale(1.05);
   }
 
-  /* Nút/Dòng chữ hướng dẫn */
+  /* Gợi ý bấm */
   .hint { 
     font-size: 1.05rem; 
     color: #c44f7a; 
     font-weight: 500;
-    margin-top: 10px; 
+    margin-top: 15px; 
     transition: opacity 0.3s; 
     cursor: pointer;
   }
   .opened .hint { opacity: 0; }
 
-  /* Thẻ chứa nội dung lời chúc */
-  .message-card { 
-    margin: 15px auto 0; 
-    max-width: 580px; 
-    padding: 0 22px; 
-    opacity: 0; 
-    transform: translateY(20px);
-    max-height: 0; 
-    overflow: hidden; 
-    transition: opacity 0.8s ease, transform 0.8s ease, max-height 1s ease, padding 0.5s ease; 
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(8px);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(217, 78, 130, 0.08);
-  }
-  .opened .message-card { 
-    opacity: 1; 
-    transform: translateY(0); 
-    max-height: 850px; 
-    padding: 28px 22px; 
-  }
-
-  .photo-frame { 
-    width: min(200px, 60vw); 
-    aspect-ratio: 4/5; 
-    margin: 0 auto 20px; 
-    padding: 6px; 
-    background: #fff;
-    border-radius: 12px; 
-    box-shadow: 0 8px 25px rgba(183, 107, 133, 0.18); 
-    transform: rotate(-1.5deg); 
-  }
-  .photo-frame img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 7px; }
-  .photo-placeholder { 
-    width: 100%; height: 100%; display: grid; place-items: center; padding: 12px; color: #b87990;
-    font-size: .88rem; background: linear-gradient(135deg, #ffe1eb, #fff1d8); 
-  }
-
+  /* Nội dung thư */
   .salutation {
     font-family: Georgia, serif;
     font-size: 1.4rem;
     font-weight: 600;
     color: #d94e82;
     text-align: left;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
   .line { 
-    margin: 10px 0; 
+    margin: 12px 0; 
     line-height: 1.8; 
     opacity: 0; 
-    transform: translateY(8px); 
+    transform: translateY(10px); 
     text-align: left;
-    font-size: 0.98rem;
+    font-size: 1rem;
     color: #4a343e;
   }
   .opened .line { animation: reveal .65s forwards; }
-  .opened .line:nth-of-type(1) { animation-delay: .35s; } 
-  .opened .line:nth-of-type(2) { animation-delay: .9s; }
-  .opened .line:nth-of-type(3) { animation-delay: 1.45s; } 
+  .opened .line:nth-of-type(1) { animation-delay: .4s; } 
+  .opened .line:nth-of-type(2) { animation-delay: .95s; }
+  .opened .line:nth-of-type(3) { animation-delay: 1.5s; } 
 
   .closing-area {
-    margin-top: 24px;
+    margin-top: 28px;
     text-align: right;
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
-  .opened .closing-area { animation: reveal .65s forwards; animation-delay: 2.0s; }
+  .opened .closing-area { animation: reveal .65s forwards; animation-delay: 2.1s; }
 
   .thinking-of-you {
     font-family: Georgia, serif;
@@ -194,7 +192,7 @@
     color: #d94e82; 
     font-family: Georgia, serif; 
     font-weight: 600;
-    font-size: 1.25rem; 
+    font-size: 1.3rem; 
     margin-top: 4px;
   }
 
@@ -203,20 +201,20 @@
     background: #fff8fb; 
     color: #c44f7a; 
     border-radius: 999px; 
-    padding: 9px 20px; 
-    margin-top: 22px; 
+    padding: 8px 22px; 
+    margin-top: 24px; 
     cursor: pointer; 
     font-size: 0.9rem;
     transition: background 0.3s;
   }
   .again:hover { background: #ffe8f0; }
 
-  /* Hiệu ứng bong bóng Trái tim & Hoa */
+  /* Bong bóng hiệu ứng hoa & tim */
   .floating-item { 
     position: fixed; 
     pointer-events: none; 
     animation: floatUp 2.8s ease-out forwards; 
-    z-index: 10; 
+    z-index: 20; 
   }
 
   @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
@@ -224,6 +222,14 @@
     0% { opacity: 0; transform: translateY(0) scale(.6) rotate(0deg); } 
     15% { opacity: 1; } 
     100% { opacity: 0; transform: translateY(-190px) scale(1.2) rotate(25deg); } 
+  }
+
+  @media(max-width: 480px) {
+    .opened .letter-card {
+      width: 95%;
+      transform: translateX(-50%) translateY(-90px) scale(1.02);
+      padding: 22px 18px;
+    }
   }
 
   @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
@@ -235,36 +241,32 @@
   <div class="eyebrow">A little note for 20/10</div>
   <h1>Gửi Thu Anh 🌷</h1>
 
-  <div class="envelope-area">
+  <div class="envelope-container">
+    <!-- Phong bao thư -->
     <div class="envelope-wrapper" id="envelope" role="button" aria-label="Mở phong thư">
       <div class="flap"></div>
       <div class="heart-seal">💌</div>
       <div class="pocket"></div>
     </div>
+
+    <!-- Lá thư nằm bên trong trượt ra -->
+    <div class="letter-card" id="letterCard" aria-live="polite">
+      <div class="salutation">Dear Thu Anh,</div>
+      
+      <p class="line">Chúc cậu ngày 20/10 thật nhẹ nhàng, luôn thấy thoải mái và vui vẻ với những gì mình đang làm.</p>
+      <p class="line">Mong rằng những ngày sắp tới của cậu luôn tràn ngập năng lượng tích cực, yên bình và gặp nhiều điều may mắn.</p>
+      <p class="line">Cảm ơn cậu vì đã luôn là một mảnh ghép thật dễ thương trong những lần chúng ta trò chuyện.</p>
+
+      <div class="closing-area">
+        <div class="thinking-of-you">Thinking of you,</div>
+        <div class="signature">Cuong</div>
+      </div>
+
+      <button class="again" id="again">Gập thư lại ✉️</button>
+    </div>
   </div>
 
   <div class="hint" id="hint">Thu Anh ấn vào đây đi 🥰</div>
-
-  <section class="message-card" aria-live="polite">
-    <div class="photo-frame">
-      <img src="https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-6/489334049_685532154424410_7291720971016263802_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=101&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEiTHvnab1BOIQB8ucMjQuQMZCTnjb9VjExkJOeNv1WMRHslZvKi4HTo7YstVbelJqayl4Uwkj0Os4YHbOXDZXd&_nc_ohc=ZiJ76YcV30wQ7kNvwH6pvpz&_nc_oc=Adpfn0ElJkuecItR8TUzL7xI_8hKFUPYrZeczfE9xvnJglBhV9PzXz-Aw7YXZYzrGuo&_nc_zt=23&_nc_ht=scontent.fhan5-6.fna&_nc_gid=E_0ccXqXL0XPbY5QVSQFdA&_nc_ss=7b2a8&oh=00_AQP_6FGA8poYCZpmPFRSn-3OsnTSQWmYMOWL2JbTHmHZ3g&oe=6ACD8743" alt="Kỷ niệm"
-           onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-      <div class="photo-placeholder" style="display:none">Đặt ảnh ở đây nhé 📷</div>
-    </div>
-
-    <div class="salutation">Dear Thu Anh,</div>
-    
-    <p class="line">Chúc cậu ngày 20/10 thật nhẹ nhàng, luôn thấy thoải mái và vui vẻ với những gì mình đang làm.</p>
-    <p class="line">Mong rằng những ngày sắp tới của cậu luôn tràn ngập năng lượng tích cực, yên bình và gặp nhiều điều may mắn.</p>
-    <p class="line">Cảm ơn cậu vì đã luôn là một mảnh ghép thật dễ thương trong những lần chúng ta trò chuyện.</p>
-
-    <div class="closing-area">
-      <div class="thinking-of-you">Thinking of you,</div>
-      <div class="signature">Cuong</div>
-    </div>
-
-    <button class="again" id="again">Đóng lại ✉️</button>
-  </section>
 </main>
 
 <script>
@@ -274,7 +276,7 @@
   const again = document.getElementById('again');
   let isOpen = false;
 
-  // Hiệu ứng thả hoa hoè & trái tim khi mở thư
+  // Hiệu ứng hoa & trái tim
   function sprinkleEffects() {
     const symbols = ['🌸', '🌷', '✿', '💖', '♥', '✨', '💕'];
     const colors = ['#ed6d9a', '#e9ad58', '#bc8bd6', '#f38181'];
@@ -285,7 +287,7 @@
         item.className = 'floating-item';
         item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
         item.style.left = (10 + Math.random() * 80) + 'vw';
-        item.style.top = (40 + Math.random() * 30) + 'vh';
+        item.style.top = (45 + Math.random() * 25) + 'vh';
         item.style.fontSize = (14 + Math.random() * 18) + 'px';
         item.style.color = colors[Math.floor(Math.random() * colors.length)];
         document.body.appendChild(item);
@@ -308,7 +310,6 @@
   again.addEventListener('click', () => {
     scene.classList.remove('opened'); 
     isOpen = false;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 
