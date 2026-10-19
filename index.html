@@ -21,26 +21,35 @@
     overflow-x: hidden;
     color: var(--ink); 
     font-family: "Segoe UI", system-ui, sans-serif; 
-    padding: 24px 14px;
+    padding: 16px 12px;
     background:
       radial-gradient(circle at 15% 20%, #ffe0e9 0 2px, transparent 3px),
       radial-gradient(circle at 85% 28%, #ffd2df 0 3px, transparent 4px),
       linear-gradient(135deg, #fff4f6, #fff9ef 55%, #ffe9ef);
     background-size: 90px 90px, 130px 130px, auto;
   }
-  .scene { width: min(100%, 600px); text-align: center; position: relative; }
-  .eyebrow { letter-spacing: .18em; text-transform: uppercase; font-size: .75rem; color: #b87990; }
-  h1 { font-family: Georgia, serif; font-weight: 500; font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 8px 0; color: #d94e82; }
   
-  /* Khu vực chứa phong thư và lá thư */
+  .scene { 
+    width: 100%; 
+    max-width: 500px; 
+    text-align: center; 
+    position: relative; 
+    margin: 0 auto;
+  }
+  
+  .eyebrow { letter-spacing: .18em; text-transform: uppercase; font-size: .7rem; color: #b87990; }
+  h1 { font-family: Georgia, serif; font-weight: 500; font-size: clamp(1.6rem, 5vw, 2.4rem); margin: 6px 0; color: #d94e82; }
+  
+  /* Container chứa phong thư & bức thư */
   .envelope-container { 
     position: relative; 
-    width: 280px; 
-    height: 190px; 
-    margin: 40px auto 20px;
+    width: min(260px, 80vw); 
+    aspect-ratio: 1.45 / 1;
+    margin: 30px auto 10px;
     perspective: 1000px;
   }
   
+  /* Phong thư */
   .envelope-wrapper {
     position: absolute;
     bottom: 0;
@@ -50,12 +59,8 @@
     background: var(--envelope-dark);
     border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 12px 28px rgba(182, 108, 132, 0.25);
+    box-shadow: 0 10px 25px rgba(182, 108, 132, 0.22);
     transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.5s ease;
-  }
-  .envelope-wrapper:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 32px rgba(182, 108, 132, 0.35);
   }
 
   /* Nắp phong thư */
@@ -65,24 +70,24 @@
     left: 0;
     width: 0;
     height: 0;
-    border-left: 140px solid transparent;
-    border-right: 140px solid transparent;
-    border-top: 105px solid #f9cad7;
+    border-left: calc(min(260px, 80vw) / 2) solid transparent;
+    border-right: calc(min(260px, 80vw) / 2) solid transparent;
+    border-top: calc(min(260px, 80vw) * 0.38) solid #f9cad7;
     transform-origin: top;
     transition: transform 0.5s ease-in-out, z-index 0.5s;
     z-index: 4;
   }
 
-  /* Mặt trước phong thư */
+  /* Thân trước phong thư */
   .pocket {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0;
     height: 0;
-    border-left: 140px solid #f2bac9;
-    border-right: 140px solid #f2bac9;
-    border-bottom: 95px solid #eab0bf;
+    border-left: calc(min(260px, 80vw) / 2) solid #f2bac9;
+    border-right: calc(min(260px, 80vw) / 2) solid #f2bac9;
+    border-bottom: calc(min(260px, 80vw) * 0.35) solid #eab0bf;
     border-radius: 0 0 10px 10px;
     z-index: 3;
   }
@@ -90,34 +95,36 @@
   /* Tem thư */
   .heart-seal {
     position: absolute;
-    top: 75px;
+    top: 40%;
     left: 50%;
-    transform: translateX(-50%);
-    font-size: 26px;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
     z-index: 5;
     transition: opacity 0.3s ease;
   }
 
-  /* LÁ THƯ (Nằm trong phong bao ban đầu) */
+  /* LÁ THƯ (Mobile First) */
   .letter-card {
     position: absolute;
-    bottom: 10px;
+    bottom: 5px;
     left: 50%;
     transform: translateX(-50%) scale(0.85);
-    width: 90%;
-    max-width: 520px;
-    background: #fff;
-    padding: 28px 24px;
+    width: 92vw;
+    max-width: 440px;
+    max-height: 75vh;
+    overflow-y: auto;
+    background: #ffffff;
+    padding: 22px 18px;
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(217, 78, 130, 0.15);
+    box-shadow: 0 12px 35px rgba(217, 78, 130, 0.18);
     border: 1px solid #ffe3ec;
     z-index: 2;
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease, z-index 0.1s 0.3s;
+    transition: transform 0.7s cubic-bezier(0.25, 1.25, 0.5, 1), opacity 0.5s ease;
   }
 
-  /* KHI MỞ THƯ: Phong thư mở nắp -> Thư chui ra & phóng to */
+  /* KHI MỞ THƯ */
   .opened .flap {
     transform: rotateX(180deg);
     z-index: 1;
@@ -126,74 +133,74 @@
     opacity: 0;
   }
   .opened .envelope-wrapper {
-    transform: translateY(60px) scale(0.9);
-    opacity: 0.4;
+    transform: translateY(40px) scale(0.85);
+    opacity: 0.25;
     pointer-events: none;
   }
   .opened .letter-card {
     opacity: 1;
     z-index: 10;
     pointer-events: auto;
-    /* Hiệu ứng chui ra từ phong bao và scale lớn ra giữa màn hình */
-    transform: translateX(-50%) translateY(-110px) scale(1.05);
+    /* Trượt lên vừa đủ trên điện thoại */
+    transform: translateX(-50%) translateY(-35px) scale(1);
   }
 
   /* Gợi ý bấm */
   .hint { 
-    font-size: 1.05rem; 
+    font-size: 1rem; 
     color: #c44f7a; 
     font-weight: 500;
-    margin-top: 15px; 
+    margin-top: 18px; 
     transition: opacity 0.3s; 
     cursor: pointer;
   }
   .opened .hint { opacity: 0; }
 
-  /* Nội dung thư */
+  /* Nội dung lá thư */
   .salutation {
     font-family: Georgia, serif;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: #d94e82;
     text-align: left;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .line { 
-    margin: 12px 0; 
-    line-height: 1.8; 
+    margin: 10px 0; 
+    line-height: 1.7; 
     opacity: 0; 
-    transform: translateY(10px); 
+    transform: translateY(8px); 
     text-align: left;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #4a343e;
   }
-  .opened .line { animation: reveal .65s forwards; }
-  .opened .line:nth-of-type(1) { animation-delay: .4s; } 
-  .opened .line:nth-of-type(2) { animation-delay: .95s; }
-  .opened .line:nth-of-type(3) { animation-delay: 1.5s; } 
+  .opened .line { animation: reveal .6s forwards; }
+  .opened .line:nth-of-type(1) { animation-delay: .35s; } 
+  .opened .line:nth-of-type(2) { animation-delay: .85s; }
+  .opened .line:nth-of-type(3) { animation-delay: 1.35s; } 
 
   .closing-area {
-    margin-top: 28px;
+    margin-top: 20px;
     text-align: right;
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
-  .opened .closing-area { animation: reveal .65s forwards; animation-delay: 2.1s; }
+  .opened .closing-area { animation: reveal .6s forwards; animation-delay: 1.85s; }
 
   .thinking-of-you {
     font-family: Georgia, serif;
     font-style: italic;
     color: #b87990;
-    font-size: 1.05rem;
+    font-size: 0.98rem;
   }
 
   .signature { 
     color: #d94e82; 
     font-family: Georgia, serif; 
     font-weight: 600;
-    font-size: 1.3rem; 
-    margin-top: 4px;
+    font-size: 1.2rem; 
+    margin-top: 2px;
   }
 
   .again { 
@@ -201,10 +208,10 @@
     background: #fff8fb; 
     color: #c44f7a; 
     border-radius: 999px; 
-    padding: 8px 22px; 
-    margin-top: 24px; 
+    padding: 8px 20px; 
+    margin-top: 18px; 
     cursor: pointer; 
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     transition: background 0.3s;
   }
   .again:hover { background: #ffe8f0; }
@@ -221,15 +228,7 @@
   @keyframes floatUp { 
     0% { opacity: 0; transform: translateY(0) scale(.6) rotate(0deg); } 
     15% { opacity: 1; } 
-    100% { opacity: 0; transform: translateY(-190px) scale(1.2) rotate(25deg); } 
-  }
-
-  @media(max-width: 480px) {
-    .opened .letter-card {
-      width: 95%;
-      transform: translateX(-50%) translateY(-90px) scale(1.02);
-      padding: 22px 18px;
-    }
+    100% { opacity: 0; transform: translateY(-180px) scale(1.2) rotate(25deg); } 
   }
 
   @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
@@ -281,19 +280,19 @@
     const symbols = ['🌸', '🌷', '✿', '💖', '♥', '✨', '💕'];
     const colors = ['#ed6d9a', '#e9ad58', '#bc8bd6', '#f38181'];
     
-    for (let i = 0; i < 22; i++) {
+    for (let i = 0; i < 20; i++) {
       setTimeout(() => {
         const item = document.createElement('span');
         item.className = 'floating-item';
         item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-        item.style.left = (10 + Math.random() * 80) + 'vw';
+        item.style.left = (8 + Math.random() * 84) + 'vw';
         item.style.top = (45 + Math.random() * 25) + 'vh';
-        item.style.fontSize = (14 + Math.random() * 18) + 'px';
+        item.style.fontSize = (14 + Math.random() * 16) + 'px';
         item.style.color = colors[Math.floor(Math.random() * colors.length)];
         document.body.appendChild(item);
         
-        setTimeout(() => item.remove(), 2900);
-      }, i * 50);
+        setTimeout(() => item.remove(), 2800);
+      }, i * 55);
     }
   }
 
